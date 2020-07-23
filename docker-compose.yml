@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  node_exporter:
+    image: 'quay.io/prometheus/node-exporter'
+    restart: 'always'
+    network_mode: 'host'
+    pid: 'host'
+    env_file: './secrets.env'
+    ports:
+      - '9100:9100'
+    volumes: 
+      - /:/host:ro,rslave
+    command: '--path.rootfs=/host'
+
+
+  prometheus:
+    image: 'prom/prometheus'
+    restart: 'always'
+    depends_on: 
+      - node_exporter
+    ports:
+      - '9090:9090'
+    networks:
+      - monitoring
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus'
+    command: '--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus'
+
+
+  grafana:
+    image: 'grafana/grafana'
+    restart: 'always'
+    depends_on: 
+      - prometheus
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - grafana-config:/etc/grafana
+    networks:
+      - monitoring
+
+
+volumes:
+  prometheus-data: 
+  grafana-data:
+  grafana-config: 
+
+
+networks:
+  monitoring:
