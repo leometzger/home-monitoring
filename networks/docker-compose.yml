@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: 'mysql'
+    restart: 'always'
+    command: '--default-authentication-plugin=mysql_native_password'
+    env_file: './secrets.env'
+    networks:
+      - ntopngnet
+    ports:
+      - '3306:3306'
+
+
+  influxdb:
+    image: 'influxdb'
+    restart: 'always'
+    networks:
+      - ntopngnet
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+
+
+  redis:
+    image: "redis:alpine"
+    networks:
+      - ntopngnet
+
+
+  ntopng:
+    image: 'ntop/ntopng:stable'
+    restart: 'always'
+    command: '/etc/ntopng.conf'
+    networks:
+      - ntopngnet
+    depends_on: 
+      - redis
+      - mysql
+      - influxdb
+    volumes:
+      - ./confs/ntopng.conf:/etc/ntopng.conf
+    ports:
+      - "3000:3000"
+      - "5556:5556"
+
+networks:
+  ntopngnet:
+
+
+volumes:
+  influxdb-data:
+  mysql-data:
