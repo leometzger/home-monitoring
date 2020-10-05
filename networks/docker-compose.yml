@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  influxdb:
+    image: 'influxdb'
+    restart: 'always'
+    networks:
+      - ntopngnet
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+
+
+  redis:
+    image: "redis:alpine"
+    networks:
+      - ntopngnet
+
+
+  ntopng:
+    image: 'ntop/ntopng:stable'
+    restart: 'always'
+    command: '/etc/ntopng.conf'
+    networks:
+      - ntopngnet
+    depends_on: 
+      - redis
+      - influxdb
+    volumes:
+      - ./confs/ntopng.conf:/etc/ntopng.conf
+    ports:
+      - "3000:3000"
+      - "5556:5556"
+
+
+  grafana:
+    image: 'grafana/grafana'
+    restart: 'always'
+    depends_on: 
+      - influxdb 
+    ports:
+      - '3001:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - grafana-config:/etc/grafana
+    networks:
+      - ntopngnet
+
+
+networks:
+  ntopngnet:
+
+
+volumes:
+  influxdb-data:
+  grafana-data:
+  grafana-config:
