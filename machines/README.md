@@ -1,29 +1,4 @@
-# Home Monitoring
-
-This repository contains a `docker-compose` based host-monitoring monitoring for your home/lab. 
-Creates a dashboard to monitor devices on your network using 
-`prometheus` and `grafana`.
-
-## Pre Requisites 
-
-- [Docker](https://docs.docker.com/get-docker/) installed;
-
-
-## Usage
-
-Clone the repository
-
-```
-git clone https://github.com/leometzger/home-monitoring
-```
-
-Change grafana password by modifying `secrets.env`
-
-Run `docker-compose`
-
-```
-docker-compose-up -d
-```
+## Machines Monitoring
 
 ### Configuring Prometheus
 
@@ -35,7 +10,7 @@ Change `prometheus/prometheus.yml` on `node_exporter` section and add your IP to
 
 After that it is necessary configure your dashboard on grafana.
 
-Open grafana accessing `localhost:3000`.
+Open grafana accessing `127.0.0.1:3000`.
 
 Configure the datasource and dashboard.
 
@@ -53,8 +28,3 @@ After that you can monitor your PC on grafana. =)
 
 To monitor other devices of your network, you need to install [Node Exporter] on them and 
 add the IP address on `prometheus/prometheus.yml` file and make sure that port `9100` is open.
-
-
-## License
-
-MIT
