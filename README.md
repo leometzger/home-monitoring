@@ -12,9 +12,14 @@ Specific instructions may be finded at specific `README` in the folders.
 
 ## Projects
 
-* **Machines**: Monitoring devices and machines of your environment. It can be visualized
+**Machines**: Monitoring devices and machines of your environment. It can be visualized
 using grafana dashboards;
-* **Networks**: Monitor your networks and store the data into a timeseries database.
+
+![Example Machines](https://user-images.githubusercontent.com/15220162/95067226-dec42b00-06d9-11eb-977f-713d3714b8cf.png)
+
+**Networks**: Monitor your networks and store the data into a timeseries database.
+
+![Example Networks](https://user-images.githubusercontent.com/15220162/95067475-47130c80-06da-11eb-9b81-f9f561ed3b65.png)
 
 ## Usage
 
